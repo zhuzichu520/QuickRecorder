@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>layout/main.qml</file>
+        <file>drawable/btn_record_pause.png</file>
+        <file>drawable/btn_record_restore.png</file>
+        <file>drawable/btn_record_start.png</file>
+        <file>view/ButtonImage.qml</file>
+        <file>drawable/btn_record_stop.png</file>
+        <file>layout/WindowSelectArea.qml</file>
+        <file>drawable/ic_menu_right.png</file>
+        <file>drawable/ic_menu_wrong.png</file>
+        <file>layout/WindowScreenCapture.qml</file>
+    </qresource>
+</RCC>

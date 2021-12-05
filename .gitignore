@@ -1,0 +1,3 @@
+*.user
+bin/win64/*.pdb
+bin/win64/*.ilk

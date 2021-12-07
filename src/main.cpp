@@ -1,11 +1,17 @@
-#include <QGuiApplication>
+﻿#include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
 #include <QLocale>
 #include <QTranslator>
 #include <QQmlContext>
+#include <QIcon>
+#include <QDateTime>
 #include "src/tool.h"
 #include "src/ScreenImageProvider.h"
+
+extern "C"{
+    #include <libavdevice/avdevice.h>
+}
 
 int main(int argc, char *argv[])
 {
@@ -13,7 +19,12 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 
+    qint64 startTime = QDateTime::currentDateTime().currentMSecsSinceEpoch();
+    qDebug()<<"开始时间："<<startTime;
+
     QGuiApplication app(argc, argv);
+    app.setWindowIcon(QIcon(":/drawable/ic_logo.png"));
+    app.setQuitOnLastWindowClosed(false);
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
@@ -35,6 +46,10 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
+
+    qint64 endTime = QDateTime::currentDateTime().currentMSecsSinceEpoch();
+    qDebug()<<"结束时间："<<endTime;
+    qDebug()<<"初始化时间："<<endTime-startTime;
 
     return app.exec();
 }

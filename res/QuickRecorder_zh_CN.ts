@@ -4,12 +4,12 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="layout/main.qml" line="11"/>
+        <location filename="layout/main.qml" line="14"/>
         <source>快录</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="layout/main.qml" line="49"/>
+        <location filename="layout/main.qml" line="88"/>
         <source>区域选择</source>
         <translation type="unfinished"></translation>
     </message>

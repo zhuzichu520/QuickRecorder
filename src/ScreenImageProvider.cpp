@@ -1,5 +1,4 @@
-#include "ScreenImageProvider.h"
-
+﻿#include "ScreenImageProvider.h"
 
 QPixmap ScreenImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize){
     qDebug()<<"requestPixmap-id:"<<id;

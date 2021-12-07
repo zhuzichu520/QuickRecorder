@@ -1,10 +1,13 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
+import Qt.labs.platform
 
 import "../view"
 
 ApplicationWindow {
+
+    id:root
     width: 640
     height: 160
     visible: true
@@ -20,6 +23,32 @@ ApplicationWindow {
 
     //0停止，1播放，2暂停
     property int runStatus : 0
+
+    SystemTrayIcon {
+        visible: true
+        icon.source: "qrc:/drawable/ic_logo.png"
+        tooltip:"快录"
+        onActivated:
+            (reason)=>{
+                if(reason===3){
+                    root.show()
+                    root.raise()
+                    root.requestActivate()
+                }
+            }
+        menu: Menu {
+            MenuItem {
+                text: "屏幕截图"
+                onTriggered:window_capture.showWindow()
+            }
+            MenuItem {
+                text: "退出"
+                onTriggered: Qt.quit()
+            }
+        }
+    }
+
+
 
 
     onRunStatusChanged: {
@@ -42,6 +71,16 @@ ApplicationWindow {
     Text {
         text: formatSeconds(secondCount)
         color: "#FFFFFF"
+        font{
+            pixelSize: 16
+            bold: true
+        }
+        anchors{
+            left: parent.left
+            top: parent.top
+            leftMargin: 20
+            topMargin: 20
+        }
     }
 
     Text {
@@ -56,7 +95,7 @@ ApplicationWindow {
         MouseArea{
             anchors.fill: parent
             onClicked: {
-                window_capture.showWindow()
+                window_select.showWindow()
             }
         }
     }
@@ -74,7 +113,6 @@ ApplicationWindow {
         visible: runStatus == 0
         onClicked: {
             start()
-            window_select.capture()
         }
     }
 
@@ -130,12 +168,23 @@ ApplicationWindow {
     }
 
     function start(){
+        var path = "%1/%2.%3".
+        arg(StandardPaths.standardLocations(StandardPaths.MoviesLocation)[0]).
+        arg(String(new Date().getTime())).
+        arg("mp4")
+        console.debug(path)
         runStatus = 1
+        var x = Math.ceil(window_select.getAreaX()/2)*2
+        var y = Math.ceil(window_select.getAreaY()/2)*2
+        var width = Math.ceil(window_select.getAreaWidth()/2)*2
+        var height = Math.ceil(window_select.getAreaHeight()/2)*2
+        console.debug("x:%1,y:%2,width:%3,height:%4".arg(x).arg(y).arg(width).arg(height))
+        tool.start(path,x,y,width,height)
     }
 
     function stop(){
         runStatus = 0
-
+        tool.stop()
     }
 
     function restore(){

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+﻿cmake_minimum_required(VERSION 3.14)
 
 project(QuickRecorder VERSION 0.1 LANGUAGES CXX)
 
@@ -16,6 +16,7 @@ if(WIN32)
     if(CMAKE_CL_64)
         message("build 64")
         set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/win64)
+        include_directories(./third/win64/ffmpeg/include)
     else()
         message("build 32")
         set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/win32)
@@ -35,6 +36,10 @@ set(PROJECT_SOURCES
     src/tool.cpp
     src/ScreenImageProvider.cpp
     src/ScreenImageProvider.h
+    src/aencode.cpp
+    src/aencode.h
+    src/gdigrab.cpp
+    src/gdigrab.h
     res/qml.qrc
     ${TS_FILES}
     )
@@ -65,6 +70,25 @@ else()
 
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
+
+if(WIN32)
+    if(CMAKE_CL_64)
+        set(FFMPEG_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/third/win64/ffmpeg/lib/)
+        target_link_libraries(QuickRecorder PRIVATE
+            ${FFMPEG_LIB_PATH}/avcodec.lib
+            ${FFMPEG_LIB_PATH}/avdevice.lib
+            ${FFMPEG_LIB_PATH}/avfilter.lib
+            ${FFMPEG_LIB_PATH}/avformat.lib
+            ${FFMPEG_LIB_PATH}/avutil.lib
+            ${FFMPEG_LIB_PATH}/postproc.lib
+            ${FFMPEG_LIB_PATH}/swresample.lib
+            ${FFMPEG_LIB_PATH}/swscale.lib
+            )
+    else()
+    endif()
+else()
+endif()
+
 
 target_compile_definitions(QuickRecorder
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
